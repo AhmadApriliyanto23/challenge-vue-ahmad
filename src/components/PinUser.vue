@@ -14,7 +14,7 @@
                 <form class="pt-5 pb-5 d-flex justify-content-center">
                     <input v-for="(id, index) in 6" :key="id" :index="index" :maxlength="1" :id="`num${index}`"
                          v-on:keyup="focusNext(index)" class="form-control me-1 num"
-                        type="text" />
+                        type="text" @keydown="checkDigit"/>
                 </form>
             </div>
         </div>
@@ -24,6 +24,11 @@
 <script setup lang="ts">
 import router from '@/router';
 
+function checkDigit (event: KeyboardEvent){
+  if (event.key.length === 1 && isNaN(Number(event.key))) {
+    event.preventDefault();
+  }
+}
 function focusNext(index: number) {
     if (index < 5) {
         document.getElementById(`num${(index + 1)}`)?.focus(); return;
