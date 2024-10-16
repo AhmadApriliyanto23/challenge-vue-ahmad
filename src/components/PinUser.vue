@@ -13,8 +13,8 @@
                 </div>
                 <form class="pt-5 pb-5 d-flex justify-content-center">
                     <input v-for="(id, index) in 6" :key="id" :index="index" :maxlength="1" :id="`num${index}`"
-                         v-on:keyup="focusNext(index)" class="form-control me-1 num"
-                        type="text" @keydown="checkDigit"/>
+                        v-on:keyup="focusNext(index)" class="form-control me-1 num" type="text" @keydown="checkDigit"
+                        v-model="listPin[index]" />
                 </form>
             </div>
         </div>
@@ -23,18 +23,22 @@
 
 <script setup lang="ts">
 import router from '@/router';
-
-function checkDigit (event: KeyboardEvent){
-  if (event.key.length === 1 && isNaN(Number(event.key))) {
-    event.preventDefault();
-  }
+import { ref } from 'vue';
+let listPin = ref<[]>([]);
+function checkDigit(event: KeyboardEvent) {
+    if (event.key.length === 1 && isNaN(Number(event.key))) {
+        event.preventDefault();
+    }
 }
 function focusNext(index: number) {
-    if (index < 5) {
-        document.getElementById(`num${(index + 1)}`)?.focus(); return;
-    }
-    if (index == 5) {
-        router.push('/home')
+    let isVal = listPin.value[index];
+    if (![undefined, ''].includes(isVal)) {
+        if (index < 5) {
+            document.getElementById(`num${(index + 1)}`)?.focus(); return;
+        }
+        if (index == 5) {
+            router.push('/home')
+        }
     }
 }
 </script>
